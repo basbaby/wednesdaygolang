@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wednesdaygolang
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      name: wednesdaygolang
+  template:
+    metadata:
+      labels:
+        name: wednesdaygolang
+    spec:
+      containers:
+      - image: kiranbabycontainerreg.azurecr.io/kiranbabycontainerrepo:wednesdaygolang
+        name: kiranbabycontainerreg
+        ports:
+          - containerPort: 8081
+      imagePullSecrets: 
+      - name: wednesdaygolangsecret
+status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: wednesdaygolang-service
+spec:
+  type: LoadBalancer
+  selector:
+    name: wednesdaygolang
+  ports:
+  - name: http  
+    port: 80
+    targetPort: 8081
